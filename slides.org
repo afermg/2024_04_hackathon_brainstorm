@@ -1,14 +1,13 @@
 #+title: Hackathon Brainstorming
 #+OPTIONS: ^:nil H:2 num:t toc:3
 #+LaTeX_CLASS: beamer
-#+LATEX_HEADER: \usepackage{tabularx}
 #+BEAMER_THEME: metropolis
 #+BEAMER_FRAME_LEVEL: 2
 #+COLUMNS: %45ITEM %10BEAMER_env(Env) %10BEAMER_act(Act) %4BEAMER_col(Col) %8BEAMER_opt(Opt)
 
 * Overview
 ** Goals
-***  Showcase the tools we have built for JUMP
+***  Showcase the tools we have built to approach JUMP data
 ***  CytoData Hackathon: Resources, Challenges and Limitations
 ***  Collect feedback and ideas on both tools and plans
 
@@ -60,20 +59,18 @@
 
 =Datasette= is a Python libary to visualise, query and edit databases; it is deployable via WebAssembly (runs on the browser).
 
-** Demo time
-:PROPERTIES:
-:BEAMER_ACT: [<+>]
-:END:
-
-@@b:<1->@@ I have -omics data for *X* modified gene or chemical compound.
-- @@b:<1>@@ How do cells affected by *X* look?
-  - @@b:<1>@@ =gallery=: Explore all the images with an associated profile.
-- @@b:<2>@@ What else produces similar morphologies?
-  - @@b:<2>@@ =simile=: Find the most similar (and dissimilar) perturbations.
-- @@b:<3>@@ What are the distinctive features of *X*-perturbed cells?
-  - @@b:<3>@@ =feature=: Find the most distinct
-- @@b:<4>@@ Does *X* have an alternative identity?
-  - @@b:<4>@@ =broad_babel=: Translates IDs (JUMP, Symbol/InChiKey, Entrez id, Broad) and which are controls.
+** How do cells affected by *X* look?
+=gallery=: Explore all the images with an associated profile.
+[[./imgs/gallery.jpg]]
+** What else produces similar morphologies?
+=simile=: Find the most similar (and dissimilar) perturbations.
+[[./imgs/simile.jpg]]
+** What are the distinctive features of *X*-perturbed cells?
+=feature=: Find the most distinctive features of a perturbation, or amongst all.
+[[./imgs/feature.jpg]]
+** Does *X* have an alternative identity?
+=broad_babel=: Translates IDs (JUMP, Symbol/InChiKey, Entrez id, Broad) and which are controls.
+[[./imgs/babel.jpg]]
 
 ** The tools can be organised based on question and dataset...
 :PROPERTIES:
@@ -131,18 +128,19 @@ flowchart LR
 #+RESULTS:
 [[file:imgs/flowchart_jump_rr.png]]
 
-** Ok, that's fun and all, but what about developer experience?
+** Ok, that's "fun" and all, but what about developer experience?
+pandas! pandas! pandas!
+\\
 The following tools are available via pip.
 
 ** =broad_babel=: Three SQL wrappers in a trenchcoat.
-Simple tool to
+Tool to translate its and provides essential information.
 - ID goes in, ID(s) come out
 - ID goes in, control metadata comes out
 
-It doubles as a unique source of ground truth for identities and metadata.
+It doubles as a central accessible source of ground truth for identities and metadata.
 
-** =jump_portrait=: Sprinkle cell images to your workflow
-Cambridge dictionary: "a painting, photograph, drawing, etc. of a person or, less commonly, of a *group of people.*"
+** =jump_portrait=: Spice-up your workflow with cell images
 
 Fetch a subset of images associated to a perturbation. Optionally, include their respective negative controls.
 - Foci-level images are accesible, not single-cell.
@@ -152,62 +150,85 @@ Fetch a subset of images associated to a perturbation. Optionally, include their
 ** Other nice JUMP-adjacent tools
 - JUMP-DTI: Fetch data from drug-target interaction (@John)
 - CPG: Fetch data from drug-target interaction (@Ank)
+- SMILES without borders: Cheminformatics black magic (@Srijit)
 
-** Aren't you just procrastinating to avoid the biology of it all?
+** Aren't you just procrastinating the dive into biology?
 \pause
 #+begin_center
 #+latex: {\Huge{Perhaps.}}
 #+end_center
 
-** Aren't you just procrastinating to avoid the biology of it all?
-*** TODO JUMP info central
+** So, we need biology vignettes
+# :PROPERTIES:
+# :BEAMER_ACT: [<+->]
+# :END:
+Or at least tutorials/documentation for others to make their own
+\pause
+\\
+#+latex: {\large{¿Por qué no los dos?}}
+\\
+As a side-note, it would be neat not to suffer an overdose of .ipynb
+
+** JUMP central concentrates knowledge, including (battle-proven) code to keep the evergrowing info in a leash.
+[[./imgs/jump_central.jpg]]
 
 * How to organise a hackathon (the fun parts)
+** We have a visual!
+#+ATTR_LATEX: :width 0.6\textwidth
+[[./imgs/poster.jpg]]
 ** WikiHow to the rescue
 #+ATTR_LATEX: :width 0.6\textwidth
-[[./imgs/wikihow_1.png]]
+[[./imgs/wikihow_1.jpg]]
 ** What are the goals?
-#+ATTR_LATEX: :width 0.6\textwidth
-[[./imgs/wikihow_2.png]]
+#+ATTR_LATEX: :width 0.9\textwidth
+[[./imgs/wikihow_2.jpg]]
 ** What are the goals?
 # :PROPERTIES:
 # :BEAMER_ACT: [<+->]
 # :END:
-- Pair biologists and computer scientists to try to find solutions and follow-up questions
-- Encourage folks to apply their own methods, knowledge and skills
-- Facilitate software developers to build a tool that makes JUMP more accessible
+- Promote JUMP (and Imaging) as an additional tool in the scientists' data arsenal
+- Pair biologists with questions and computer scientists with who can tackle those questions
+- Encourage folks to apply their own methods, knowledge and skills to find out new/better approaches to use morphological profiles
+
 ** An open-ended hackathon
 - The data and tools will be available beforehand
 #+ATTR_LATEX: :width 0.6\textwidth
-[[./imgs/wikihow_4.png]]
-** More winners is better
+[[./imgs/wikihow_4.jpg]]
+** Are more winners more fun?
 #+ATTR_LATEX: :width 0.6\textwidth
-[[./imgs/wikihow_3.png]]
-** We set two independent tracks
+[[./imgs/wikihow_3.jpg]]
+** We are set two independent tracks
 *** Further a biological story
 *** Build a tool that helps data processing
-** Structuring teams is hard
-[[./imgs/wikihow_5.png]]
+
+Prizes are more symbolic, we are aiming for colllaborative more than competitive.
+
+** How should we structure teams?
+#+ATTR_LATEX: :width 0.8\textwidth
+[[./imgs/wikihow_5.jpg]]
 ** Structuring teams is hard
 There are multiple options for forming groups
-- Allow people to form teams beforehand
-- Make teams that combine computer scientists and biologists
+- Allow some teams to come prepared?
+- On-site mixing of computer scientists and biologists
 - Both (is it a fair competition to pitch these teams against each other?)
-** Sponsors
-[[./imgs/wikihow_6.png]]
-** Ardigen offered becoming a sponsor
+** Sponsors are an option
+[[./imgs/wikihow_6.jpg]]
+** One sponsor has step up
 - $1000 dollars for prize + Ardigen-branded gadgets
 - One data analyst and one biologist to help out with organisation
 ** Limitations
-- 40-60 maximum capacity
+- 40-60 maximum room capacity
 - ~6.5 real hours for design/coding/analysis
 - Wide range of technical and biological expertise
 * Brainstorm session
-** Suggestions from your own hackathons?
-** Pain points
+** Suggestions from your own experiences?
+- Things you liked about an event
+- Specific considerations for Bio Hackathons (e.g., Allen Institute)
+** Current elements in the air
 - Do we charge a registration fee?
 - Should we give preference to registrants of Cytodata/SBI2?
 - We have guaranteed $1k for prizes. We may have up to 8 winners.
+- What are attractive prizes that will be palatable to the sponsors and committee?
 ** Any other suggestions?
 
 ** Links and resources
