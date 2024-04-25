@@ -1,0 +1,216 @@
+#+title: Hackathon Brainstorming
+#+OPTIONS: ^:nil H:2 num:t toc:3
+#+LaTeX_CLASS: beamer
+#+LATEX_HEADER: \usepackage{tabularx}
+#+BEAMER_THEME: metropolis
+#+BEAMER_FRAME_LEVEL: 2
+#+COLUMNS: %45ITEM %10BEAMER_env(Env) %10BEAMER_act(Act) %4BEAMER_col(Col) %8BEAMER_opt(Opt)
+
+* Overview
+** Goals
+***  Showcase the tools we have built for JUMP
+***  CytoData Hackathon: Resources, Challenges and Limitations
+***  Collect feedback and ideas on both tools and plans
+
+* JUMP (beta) toolkit
+** Is it really that hard to access/process JUMP data?
+
+\pause
+#+begin_center
+#+latex: {\Huge{Yes.}}
+#+end_center
+
+** Is it really that hard to access/process JUMP data?
+# :PROPERTIES:
+# :BEAMER_ACT: [<+->]
+# :END:
+
+-  @@b:<1>@@ *Loads of data*
+  - ~115k chemical perturbations
+  - ~15k genes (KO'd, overexpressed or both).
+
+- @@b:<2>@@ *Scattered metadata*
+  - How do we visualise the images from which a profile was produced?
+  - Are these two perturbations from the same batch/plate?
+
+- @@b:<3>@@ *Diverse backgrounds*
+  - How can biologists with limited coding experience benefit?
+  - How can developers build their own tools?
+
+# ** What is the "right" way to analyse morphological profiles?
+# - What are previous analyses and their conclusions?
+# - How can we evaluate
+
+** Some user stories of biologists
+:PROPERTIES:
+:BEAMER_ACT: [<+>]
+:END:
+
+@@b:<1->@@ I have -omics data for *X* modified gene or chemical compound.
+- How do cells affected by *X* look?
+- What else produces similar morphologies?
+- What are the distinctive features of *X*-perturbed cells?
+- Can my *X* be found under a different name?
+
+** We preprocess data and publish it via Datasette
+:PROPERTIES:
+:BEAMER_ACT: [<+>]
+:END:
+=jump_rr= (JUMP Round-Robin) is our Python tool to perform pairwise computations on profiles or features using the GPU. It also processes metadata to build whole image paths.
+
+=Datasette= is a Python libary to visualise, query and edit databases; it is deployable via WebAssembly (runs on the browser).
+
+** Demo time
+:PROPERTIES:
+:BEAMER_ACT: [<+>]
+:END:
+
+@@b:<1->@@ I have -omics data for *X* modified gene or chemical compound.
+- @@b:<1>@@ How do cells affected by *X* look?
+  - @@b:<1>@@ =gallery=: Explore all the images with an associated profile.
+- @@b:<2>@@ What else produces similar morphologies?
+  - @@b:<2>@@ =simile=: Find the most similar (and dissimilar) perturbations.
+- @@b:<3>@@ What are the distinctive features of *X*-perturbed cells?
+  - @@b:<3>@@ =feature=: Find the most distinct
+- @@b:<4>@@ Does *X* have an alternative identity?
+  - @@b:<4>@@ =broad_babel=: Translates IDs (JUMP, Symbol/InChiKey, Entrez id, Broad) and which are controls.
+
+** The tools can be organised based on question and dataset...
+:PROPERTIES:
+:BEAMER_opt: shrink=35
+:END:
+
+|                |                       |                      |                  |
+|                |                       |                      |                  |
+|                |                       |                      |                  |
+|                |                       |                      |                  |
+| Perturbation   | Similar perturbations | Distinctive features | Images           |
+|----------------+-----------------------+----------------------+------------------|
+| Overexpression | [[https://broad.io/orf][orf]]                   | [[https://broad.io/orf_feature][orf_feature]]          | [[https://broad.io/orf_gallery][orf_gallery]]      |
+| Knocked-Out    | [[https://broad.io/crispr][crispr]]                | [[https://broad.io/crispr_feature][crispr_feature]]       | [[https://broad.io/crispr_gallery][crispr_gallery]]   |
+| Compound       | [[https://broad.io/compound][compound]]              | [[https://broad.io/compound_feature][compound_feature]]     | [[https://broad.io/compound_gallery][compound_gallery]] |
+|                |                       |                      |                  |
+|                |                       |                      |                  |
+
+#+begin_src latex :export results
+\begin{large}
+For example:\\
+- broad.io/orf\\
+- broad.io/orf\_feature\\
+- broad.io/orf\_gallery\\[1in]
+\begin{center}(Broad shortlinks are an underused asset. Keep it low-key.)\end{center}
+\end{large}
+#+end_src
+
+** ...or as a decision flowchart
+
+#+begin_src mermaid :file imgs/flowchart_jump_rr.png :exports results :results replace
+%%{init: {
+'theme': 'forest',
+"flowchart" : { "curve" : "basis" },
+"themeVariables": {"fontSize": "150px"}
+} }%%
+flowchart LR
+    A[I want morphological \n info of perturbation X] --> B{Genetic or \n Chemical?}
+    B -- Genetic --> D{Overexpression \n or Knock-Out?}
+    B -- Both --> Z[(WIP)]
+    B -- Chemical --> compounds{What kind of data?}
+    D -- Overexpression --> orf{What kind of data?}
+    D -- Knock-Out --> crispr{What kind of data?}
+    orf -- Perturbations -->  F[(broad.io/orf)]
+    orf -- Features -->  G[(broad.io/orf_feature)]
+    orf -- Images -->  G[(broad.io/orf_gallery)]
+    crispr -- Similar perturbations -->  H[(broad.io/crispr)]
+    crispr -- Distinctive features --> I[(broad.io/crispr_feature)]
+    crispr -- Images -->  G[(broad.io/crispr_gallery)]
+    compounds -- Similar perturbations -->  K[(broad.io/compound)]
+    compounds -- Distinctive features --> L[(broad.io/compound_feature)]
+    compounds -- Images -->  M[(broad.io/compound_gallery)]
+#+end_src
+
+#+RESULTS:
+[[file:imgs/flowchart_jump_rr.png]]
+
+** Ok, that's fun and all, but what about developer experience?
+The following tools are available via pip.
+
+** =broad_babel=: Three SQL wrappers in a trenchcoat.
+Simple tool to
+- ID goes in, ID(s) come out
+- ID goes in, control metadata comes out
+
+It doubles as a unique source of ground truth for identities and metadata.
+
+** =jump_portrait=: Sprinkle cell images to your workflow
+Cambridge dictionary: "a painting, photograph, drawing, etc. of a person or, less commonly, of a *group of people.*"
+
+Fetch a subset of images associated to a perturbation. Optionally, include their respective negative controls.
+- Foci-level images are accesible, not single-cell.
+- Negative controls is essential to account for +batch effects+.
+- Useful to train Deep Learning models on images on-the-fly(?).
+
+** Other nice JUMP-adjacent tools
+- JUMP-DTI: Fetch data from drug-target interaction (@John)
+- CPG: Fetch data from drug-target interaction (@Ank)
+
+** Aren't you just procrastinating to avoid the biology of it all?
+\pause
+#+begin_center
+#+latex: {\Huge{Perhaps.}}
+#+end_center
+
+** Aren't you just procrastinating to avoid the biology of it all?
+*** TODO JUMP info central
+
+* How to organise a hackathon (the fun parts)
+** WikiHow to the rescue
+#+ATTR_LATEX: :width 0.6\textwidth
+[[./imgs/wikihow_1.png]]
+** What are the goals?
+#+ATTR_LATEX: :width 0.6\textwidth
+[[./imgs/wikihow_2.png]]
+** What are the goals?
+# :PROPERTIES:
+# :BEAMER_ACT: [<+->]
+# :END:
+- Pair biologists and computer scientists to try to find solutions and follow-up questions
+- Encourage folks to apply their own methods, knowledge and skills
+- Facilitate software developers to build a tool that makes JUMP more accessible
+** An open-ended hackathon
+- The data and tools will be available beforehand
+#+ATTR_LATEX: :width 0.6\textwidth
+[[./imgs/wikihow_4.png]]
+** More winners is better
+#+ATTR_LATEX: :width 0.6\textwidth
+[[./imgs/wikihow_3.png]]
+** We set two independent tracks
+*** Further a biological story
+*** Build a tool that helps data processing
+** Structuring teams is hard
+[[./imgs/wikihow_5.png]]
+** Structuring teams is hard
+There are multiple options for forming groups
+- Allow people to form teams beforehand
+- Make teams that combine computer scientists and biologists
+- Both (is it a fair competition to pitch these teams against each other?)
+** Sponsors
+[[./imgs/wikihow_6.png]]
+** Ardigen offered becoming a sponsor
+- $1000 dollars for prize + Ardigen-branded gadgets
+- One data analyst and one biologist to help out with organisation
+** Limitations
+- 40-60 maximum capacity
+- ~6.5 real hours for design/coding/analysis
+- Wide range of technical and biological expertise
+* Brainstorm session
+** Suggestions from your own hackathons?
+** Pain points
+- Do we charge a registration fee?
+- Should we give preference to registrants of Cytodata/SBI2?
+- We have guaranteed $1k for prizes. We may have up to 8 winners.
+** Any other suggestions?
+
+** Links and resources
+- Slides: [[https://github.com/afermg/2024_04_hackathon_brainstorm][github.com/afermg/2024_04_hackathon_brainstorm]]
+- Monorepo of Carpenter-Singh Lab: [[https://github.com/broadinstitute/monorepo][broad.io/monorepo]]
+- JUMP Info central: [[https://broad.io/jump][broad.io/jump]]
