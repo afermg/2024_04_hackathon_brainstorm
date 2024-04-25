@@ -11,7 +11,7 @@
 ***  CytoData Hackathon: Resources, Challenges and Limitations
 ***  Collect feedback and ideas on both tools and plans
 
-* JUMP (beta) toolkit
+* Current JUMP toolkit
 ** Is it really that hard to access/process JUMP data?
 
 \pause
@@ -148,8 +148,8 @@ Fetch a subset of images associated to a perturbation. Optionally, include their
 - Useful to train Deep Learning models on images on-the-fly(?).
 
 ** Other nice JUMP-adjacent tools
-- JUMP-DTI: Fetch data from drug-target interaction (@John)
-- CPG: Fetch data from drug-target interaction (@Ank)
+- jump-dti: Fetch data from drug-target interaction (@John)
+- cpg-data: Fetch images for any CellPainting data (@Ank)
 - SMILES without borders: Cheminformatics black magic (@Srijit)
 
 ** Aren't you just procrastinating the dive into biology?
@@ -191,7 +191,7 @@ As a side-note, it would be neat not to suffer an overdose of .ipynb
 - Encourage folks to apply their own methods, knowledge and skills to find out new/better approaches to use morphological profiles
 
 ** An open-ended hackathon
-- The data and tools will be available beforehand
+The data and tools will be available beforehand
 #+ATTR_LATEX: :width 0.6\textwidth
 [[./imgs/wikihow_4.jpg]]
 ** Are more winners more fun?
