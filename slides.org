@@ -20,9 +20,6 @@
 #+end_center
 
 ** Is it really that hard to access/process JUMP data?
-# :PROPERTIES:
-# :BEAMER_ACT: [<+->]
-# :END:
 
 -  @@b:<1>@@ *Loads of data*
   - ~115k chemical perturbations
@@ -146,6 +143,7 @@ Fetch a subset of images associated to a perturbation. Optionally, include their
 - Foci-level images are accesible, not single-cell.
 - Negative controls is essential to account for +batch effects+.
 - Useful to train Deep Learning models on images on-the-fly(?).
+
 
 ** Other nice JUMP-adjacent tools
 - jump-dti: Fetch data from drug-target interaction (@John)
